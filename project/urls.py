@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from api.views import ScriptViewSet
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('selected_script/', ScriptViewSet.selected_script),
 ]
