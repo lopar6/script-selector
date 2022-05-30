@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.db import models
+import os
 
 class ScriptSet(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -30,6 +32,11 @@ class Script(models.Model):
         # bytes = self.bat_file.encode('ascii')
         # self.base64_file = base64.b64encode(bytes)
         super(Script, self).save(*args, **kwargs)
+
+    def delete(self, using=None, keep_parents=False):
+        print(settings.MEDIA_ROOT + "/" + str(self.bat_file))
+        os.remove(settings.MEDIA_ROOT + "/" + str(self.bat_file))
+        return super().delete(using, keep_parents)
 
     def __str__(self):
         return self.name
