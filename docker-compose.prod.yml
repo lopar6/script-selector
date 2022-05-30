@@ -6,15 +6,15 @@ services:
     build:
       context: .
       dockerfile: prod.Dockerfile
-    command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
+    # command: gunicorn --bind 0.0.0.0:8000 wsgi:application
     env_file: .env
     restart: unless-stopped
     depends_on:
       - script_selector_db
     stdin_open: true
     tty: true
-    ports:
-      - 8000:8000
+    expose:
+      - 8000
     volumes:
       - .:/app
 
@@ -33,11 +33,15 @@ services:
       - script_selector_db_volume:/var/lib/postgresql/data
 
   nginx:
-    build: ./nginx
+    build:
+      context: ./nginx
     ports:
       - 1337:80
     depends_on:
       - script_selector_api
+    volumes:
+      - static_volume:/app/staticfiles
 
 volumes:
   script_selector_db_volume:
+  static_volume:

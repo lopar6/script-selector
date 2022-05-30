@@ -1,3 +1,4 @@
 .env
 __pycache__/
 uploaded-scripts
+staticfiles/
