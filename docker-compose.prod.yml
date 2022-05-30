@@ -1,0 +1,43 @@
+version: "3.4"
+
+services:
+  script_selector_api:
+    container_name: script_selector_api
+    build:
+      context: .
+      dockerfile: prod.Dockerfile
+    command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
+    env_file: .env
+    restart: unless-stopped
+    depends_on:
+      - script_selector_db
+    stdin_open: true
+    tty: true
+    ports:
+      - 8000:8000
+    volumes:
+      - .:/app
+
+  script_selector_db:
+    container_name: script_selector_db
+    image: postgres:14.2
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-password}
+      POSTGRES_DB: ${POSTGRES_DB:-script_selector}
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    volumes:
+      # Persist database state between docker sessions/builds
+      - script_selector_db_volume:/var/lib/postgresql/data
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - script_selector_api
+
+volumes:
+  script_selector_db_volume:
