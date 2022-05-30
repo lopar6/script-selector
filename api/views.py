@@ -22,6 +22,8 @@ class ScriptViewSet():
         file.close()
         bytesFile = file_text.encode('ascii')
         base64File = codecs.encode(bytesFile, 'base64')
+        script.used = True
+        script.save()
 
         return HttpResponse(base64File, content_type="text/plain")
 

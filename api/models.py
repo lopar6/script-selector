@@ -39,4 +39,10 @@ class Script(models.Model):
         return super().delete(using, keep_parents)
 
     def __str__(self):
-        return self.name
+        selected = ''
+        used = ''
+        if self.chosen_one:
+            selected += "CHOSEN -> "
+        if self.used:
+            used += " *"
+        return selected + self.name + used
