@@ -3,15 +3,17 @@ from api.forms import AddScriptsForm
 
 from api.models import ScriptSet, Script
 
+
 @admin.register(Script)
 class UserScript(admin.ModelAdmin):
-    pass
+    raw_id_fields = ('script_set',)
 
 @admin.register(ScriptSet)
-class UserFolder(admin.ModelAdmin):
+class UserScriptSet(admin.ModelAdmin):
     form = AddScriptsForm
     # inlines = [ShowPhotoInline]
 
-    # def save_related(self, request, form, formsets, change):
-    #     super().save_related(request, form, formsets, change)
-    #     form.save_photos(form.instance)
+    def save_model(self, request, obj, form, change) -> None:
+        x = super().save_model(request, obj, form, change)
+        form.save_scripts(form, obj)
+

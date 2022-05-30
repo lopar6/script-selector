@@ -30,6 +30,7 @@ DEBUG = env.get('DEBUG', 'True')
 
 ALLOWED_HOSTS = [env.get("ALLOWED_HOSTS", "localhost,0.0.0.0,127.0.0.1")]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploaded-scripts")
 # Application definition
 
 INSTALLED_APPS = [

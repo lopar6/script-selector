@@ -1,6 +1,6 @@
 from django import forms
 
-from api.models import ScriptSet
+from api.models import Script, ScriptSet
 
 
 class AddScriptsForm(forms.ModelForm):
@@ -17,7 +17,11 @@ class AddScriptsForm(forms.ModelForm):
             "bat_files",
         )
 
-    def save(self, commit=True):
-        instance = super().save(commit=commit)
-        print(instance)
-        return instance
+    def save_scripts(self, form, scriptSet):
+        # TODO validation
+        for file in self.files.getlist("bat_files"):
+            script = Script()
+            script.name = file.name
+            script.bat_file = file
+            script.script_set = scriptSet
+            script.save()
