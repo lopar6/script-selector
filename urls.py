@@ -22,5 +22,5 @@ from api.views import turtle_pants, ScriptViewSet
 urlpatterns = [
     path('', turtle_pants),
     path('admin/', admin.site.urls),
-    path('selected_script/', ScriptViewSet.selected_script),
+    path('selected-script/', ScriptViewSet.selected_script),
 ]

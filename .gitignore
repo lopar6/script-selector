@@ -2,3 +2,4 @@
 __pycache__/
 uploaded-scripts
 staticfiles/
+static/
